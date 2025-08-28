@@ -14,8 +14,191 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model User {
+//   id   String @id @default(auto()) @map("_id") @db.ObjectId
+//   name String
+// }
 
-model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum branches {
+  CSE
+  IT
+  CSE_AIML
+  PE
+  ETC
+  ME
+  CE
+  EE
+}
+
+model Students {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  regNo            String         @unique
+  email            String         @unique
+  password         String
+  profileImg       String?
+  branch           branches?
+  graduationYear   Int?
+  cgpa             Float?
+  profileCompleted Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  documents        Documents[]
+  experiences      Experiences[]
+  applications     Applications[]
+  notifications    Notification[]
+}
+
+enum docType {
+  tenthCertificate
+  twelthCertificate
+  recentMarksheet
+  identityCard
+  certification
+  other
+}
+
+type Document {
+  type       docType
+  url        String
+  uploadedAt DateTime @default(now())
+}
+
+model Documents {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  student   Students   @relation(fields: [studentId], references: [id])
+  studentId String     @db.ObjectId
+  documents Document[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum expType {
+  certification
+  internship
+  project
+  apprenticeship
+}
+
+type experience {
+  type         expType
+  title        String
+  organization String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  technologies String[]
+}
+
+model Experiences {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  student     Students     @relation(fields: [studentId], references: [id])
+  studentId   String       @db.ObjectId
+  experiences experience[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+enum JobType {
+  FULL_TIME
+  INTERNSHIP
+}
+
+type jobEligibility {
+  branches        branches[]
+  graduationYears Int[]
+  minCgpa         Float?
+}
+
+enum jobListingStatus {
+  OPEN
+  CLOSED
+  IN_PROGRESS
+}
+
+model JobListing {
+  id           String           @id @default(auto()) @map("_id") @db.ObjectId
+  companyName  String
+  jobTitle     String
+  jobType      JobType
+  description  String
+  eligibility  jobEligibility
+  testLink     String
+  status       jobListingStatus
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  applications Applications[]
+  analytics    Analytics[]
+}
+
+enum applicationStatus {
+  APPLIED
+  SHORTLISTED
+  TEST
+  INTERVIEW
+  ACCEPTED
+  REJECTED
+}
+
+model Applications {
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  student    Students          @relation(fields: [studentId], references: [id])
+  studentId  String            @db.ObjectId
+  jobListing JobListing        @relation(fields: [jobId], references: [id])
+  jobId      String            @db.ObjectId
+  status     applicationStatus
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  student   Students @relation(fields: [studentId], references: [id])
+  studentId String   @db.ObjectId
+  title     String
+  message   String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  industry      String
+  website       String
+  contactPerson String
+  contactEmail  String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Analytics{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  jobListing  JobListing @relation(fields: [jobId], references: [id])
+  jobId      String   @db.ObjectId
+  totalApplicants Int
+  shortlisted   Int
+  selected      Int
+  rejected      Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Announcements{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
