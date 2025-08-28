@@ -2,3 +2,6 @@
 /src/generated/prisma
 node_modules/
 tsconfig.tsbuildinfo
+
+# Ignore build output
+dist/
