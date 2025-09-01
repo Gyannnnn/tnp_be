@@ -6,6 +6,8 @@ import cors from "cors";
 
 //Routes Imports
 import authRouter from "./routes/Auth/auth.routes";
+import documentRouter from "./routes/Document/document.routes";
+import studentRouter from "./routes/Student/student.routes";
 
 
 
@@ -28,6 +30,12 @@ app.get("/",(req,res)=>{
 
 
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/students", studentRouter);
+
+
+
+
+
 
 
 
