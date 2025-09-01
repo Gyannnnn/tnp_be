@@ -4,6 +4,8 @@ require("dotenv").config();
 import express from "express";
 import cors from "cors";
 import authRouter from "./routes/Auth/auth.routes";
+import documentRouter from "./routes/Document/document.routes";
+import studentRouter from "./routes/Student/student.routes";
 
 //Initialisation
 const app = express();
@@ -22,6 +24,12 @@ app.get("/",(req,res)=>{
     });
 });
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/students", studentRouter);
+
+
+
+
+
 
 
 
