@@ -1,9 +1,14 @@
 require("dotenv").config();
 
-//File Imports
+
 import express from "express";
 import cors from "cors";
+
+//Routes Imports
 import authRouter from "./routes/Auth/auth.routes";
+import experienceRouter from "./routes/Experience/experience.route";
+
+
 
 //Initialisation
 const app = express();
@@ -21,7 +26,10 @@ app.get("/",(req,res)=>{
         message: "Welcome to TNP Backend"
     });
 });
+
+
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/experience",experienceRouter);
 
 
 

@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://patrasubhankar2205:Monty45@cluster0.mzhmc.mongodb.net/TnP_Platform?retryWrites=true&w=majority&appName=Cluster0"
 }
 
 model Admin {
@@ -100,9 +100,9 @@ model Experience {
   type         ExpType
   title        String
   organisation String
-  description  String
+  description  String?
   startDate    DateTime
-  endDate      DateTime
+  endDate      DateTime?
   technologies String[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -204,14 +204,19 @@ enum AudienceType {
   BATCH
 }
 
+type AnnouncementFilter {
+  branches        Branches[]
+  graduationYears Int[]
+}
+
 model Announcement {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   audience    AudienceType
-  filterData  Json?
-  createdBy   String       @db.ObjectId
-  admin       Admin        @relation(fields: [createdBy], references: [id])
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  filterData  AnnouncementFilter? 
+  createdBy   String              @db.ObjectId
+  admin       Admin               @relation(fields: [createdBy], references: [id])
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 }
