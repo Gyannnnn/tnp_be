@@ -1,6 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JwtPayload;
+    }
+  }
+}
+
 export const studentAuthValidation = (
   req: Request,
   res: Response,
@@ -16,6 +24,7 @@ export const studentAuthValidation = (
   const token = authHeader.split(" ")[1] as string;
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    req.user = decoded;
     const role = decoded.role as string;
 
     if (role === "STUDENT" || role === "ADMIN") {

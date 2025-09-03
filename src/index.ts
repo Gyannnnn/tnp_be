@@ -6,6 +6,7 @@ import cors from "cors";
 
 //Routes Imports
 import authRouter from "./routes/Auth/auth.routes";
+import experienceRouter from "./routes/Experience/experience.route";
 
 
 
@@ -28,6 +29,7 @@ app.get("/",(req,res)=>{
 
 
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/experience",experienceRouter);
 
 
 

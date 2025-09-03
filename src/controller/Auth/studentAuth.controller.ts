@@ -110,6 +110,7 @@ export const studentSignUp = async (request: Request, response: Response) => {
       token: token,
     });
   } catch (error) {
+    console.error("STUDENT SIGNUP FAILED:", error);
     response.status(500).json({
       message: "Internal Server Error",
       error: error,
