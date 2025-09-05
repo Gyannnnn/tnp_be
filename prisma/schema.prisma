@@ -80,7 +80,7 @@ type Document {
 model Documents {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   student   Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String     @db.ObjectId
+  studentId String     @db.ObjectId @unique
   documents Document[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
